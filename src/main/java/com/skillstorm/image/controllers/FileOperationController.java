@@ -15,7 +15,7 @@ public class FileOperationController {
 	@Autowired
 	private S3BucketStorageService s3BucketStorageService;
 	
-	@DeleteMapping
+	@DeleteMapping("delete/{fileName}")
 	public ResponseEntity<String> deleteFile(@PathVariable String fileName){
 		return new ResponseEntity<>(s3BucketStorageService.deleteFileFromS3(fileName), HttpStatus.OK);
 	}
