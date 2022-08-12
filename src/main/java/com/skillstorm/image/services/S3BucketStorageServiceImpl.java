@@ -34,8 +34,9 @@ public class S3BucketStorageServiceImpl implements S3BucketStorageService {
 
 	@Override
 	public String deleteFileFromS3(String fileName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		amazonS3.deleteObject(bucketName, fileName);
+	    return fileName + " removed ...";
+	  }
+	
 
 }
