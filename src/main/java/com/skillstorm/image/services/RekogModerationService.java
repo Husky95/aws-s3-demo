@@ -28,6 +28,10 @@ import software.amazon.awssdk.services.rekognition.model.RekognitionException;
 @Service
 public class RekogModerationService {
 
+  /**
+   * Main method is a temporary entry point
+   * @param args
+   */
   public static void main(String[] args) {
     // test path
     final String path = "G:\\testPictures\\hate-groups-nazi.png";
@@ -47,7 +51,12 @@ public class RekogModerationService {
 
   }
   
-  public static void rekognize(String path) {
+  /**
+   * working service method for moderating content
+   * will return boolean for abstraction, TRUE for pass, FALSE for fail
+   * @param path -image url string
+   */
+  public static boolean rekognize(String path) {
     
     Region region = Region.US_WEST_1;
     
@@ -64,18 +73,31 @@ public class RekogModerationService {
       DetectModerationLabelsRequest modLabelsReq = DetectModerationLabelsRequest.builder()
           .image(im)
           .minConfidence(50F) // will detect labels if it has a confidence level of at least 50%
-          // default, can change according to Sean/Patrick
+          // default, can change according to Sean/Patrick/testing
           .build();
       
       DetectModerationLabelsResponse modLabelsResp = mod.detectModerationLabels(modLabelsReq);
       List<ModerationLabel> flags = modLabelsResp.moderationLabels();
+        
+      
+      //debug mode: uncommented
       printLabels(flags);
+      
+      if (flags.isEmpty()) {
+        return true;
+      }
     
     } catch (FileNotFoundException | RekognitionException e) {
       e.printStackTrace();
     }
+    
+    return false;
   }
   
+  /**
+   * Prints detected moderation labels, output/testing purposes only
+   * @param modLabels -list of detected moderation labels
+   */
   private static void printLabels(List<ModerationLabel> modLabels) {
     System.out.println("Detected Labels:");
     for (ModerationLabel m : modLabels) {
